@@ -18,8 +18,12 @@ import java.net.URI;
 @RequestMapping("/topicos")
 @SecurityRequirement(name = "bearer-key")
 public class TopicoController {
-    @Autowired
-    private TopicoService topicoService;
+    private final TopicoService topicoService;
+
+    public TopicoController(@Autowired TopicoService topicoService) {
+        this.topicoService = topicoService;
+    }
+
     @PostMapping
     public ResponseEntity<DatosRespuestaTopico> registrarTopico(@RequestBody @Valid DatosRegistroTopico datosRegistroTopico, UriComponentsBuilder uriComponentsBuilder){
         DatosRespuestaTopico datosRespuestaTopico = topicoService.registrarTopico(datosRegistroTopico);

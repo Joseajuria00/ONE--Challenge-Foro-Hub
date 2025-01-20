@@ -12,12 +12,17 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RespuestaService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private TopicoRepository topicoRepository;
-    @Autowired
-    private RespuestaRepository respuestaRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final TopicoRepository topicoRepository;
+    private final RespuestaRepository respuestaRepository;
+
+    public RespuestaService(@Autowired UsuarioRepository usuarioRepository,
+                            @Autowired TopicoRepository topicoRepository,
+                            @Autowired RespuestaRepository respuestaRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.topicoRepository = topicoRepository;
+        this.respuestaRepository = respuestaRepository;
+    }
 
     public DatosResponseRespuesta registrarRespuesta(DatosRegistroRespuesta datosRegistroRespuesta){
         var usuario = usuarioRepository.findById(datosRegistroRespuesta.idUsuario())

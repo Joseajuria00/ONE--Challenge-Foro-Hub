@@ -21,8 +21,13 @@ import java.net.URI;
 @RequestMapping("/respuestas")
 @SecurityRequirement(name = "bearer-key")
 public class RespuestaController {
-    @Autowired
-    private RespuestaService respuestaService;
+    private final RespuestaService respuestaService;
+
+
+    public RespuestaController(@Autowired RespuestaService respuestaService) {
+        this.respuestaService = respuestaService;
+    }
+
     @PostMapping
     public ResponseEntity<DatosResponseRespuesta> registrarRespuesta(@RequestBody @Valid DatosRegistroRespuesta datosRegistroRespuesta, UriComponentsBuilder uriComponentsBuilder){
         DatosResponseRespuesta datosResponseRespuesta = respuestaService.registrarRespuesta(datosRegistroRespuesta);

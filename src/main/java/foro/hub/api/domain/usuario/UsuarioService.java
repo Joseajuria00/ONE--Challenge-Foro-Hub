@@ -4,16 +4,25 @@ import foro.hub.api.domain.ValidacionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UsuarioService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UsuarioService(@Autowired UsuarioRepository usuarioRepository, @Autowired PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     public DatosRespuestaUsuario registrarUsuario(DatosRegistroUsuario datosRegistroUsuario){
         if(usuarioRepository.existsByLogin(datosRegistroUsuario.login())){
             throw new ValidacionException("Ya existe un Usuario con ese Nombre de Usuario");
         }
+        datosRegistroUsuario = new DatosRegistroUsuario(datosRegistroUsuario.name(), datosRegistroUsuario.login(),
+                passwordEncoder.encode(datosRegistroUsuario.password()));
         Usuario usuario = usuarioRepository.save(new Usuario(datosRegistroUsuario));
         datosRegistroUsuario = null;
         usuario.setPassword(null);

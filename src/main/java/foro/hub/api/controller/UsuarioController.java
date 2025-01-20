@@ -21,8 +21,12 @@ import java.net.URI;
 @RequestMapping("/usuarios")
 @SecurityRequirement(name="bearer-key")
 public class UsuarioController {
-    @Autowired
-    UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(@Autowired UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
     @PostMapping
     public ResponseEntity<DatosRespuestaUsuario> registrarUsuario(@RequestBody @Valid DatosRegistroUsuario datosRegistroUsuario, UriComponentsBuilder uriComponentsBuilder){
         DatosRespuestaUsuario datosRespuestaUsuario = usuarioService.registrarUsuario(datosRegistroUsuario);

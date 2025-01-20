@@ -10,10 +10,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class TopicoService {
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-    @Autowired
-    private TopicoRepository topicoRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final TopicoRepository topicoRepository;
+
+    public TopicoService(@Autowired UsuarioRepository usuarioRepository, @Autowired TopicoRepository topicoRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.topicoRepository = topicoRepository;
+    }
+
     public DatosRespuestaTopico registrarTopico(DatosRegistroTopico datosRegistroTopico){
         var usuario = usuarioRepository.findById(datosRegistroTopico.idUsuario())
                 .orElseThrow(() -> new ValidacionException("No existe un Usuario con el Id informado"));
